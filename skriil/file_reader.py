@@ -17,7 +17,10 @@ def read_csv(csv, separator=","):
 
     for key, value in data.items():
         data[key] = [[x] for x in value]
-    return data
+        data[key] = np.array(value)
+
+    dataObj = Data(data)
+    return dataObj
 
 
 def convert_to_int(data):
@@ -30,3 +33,21 @@ def convert_to_int(data):
                 new_data[i][j] = new_data[i][j]
     return new_data
 
+
+class Data:
+    def __init__(self, data):
+        self.data = data
+
+    def get_values(self, keys):
+        if len(keys) == 1:
+            data = []
+            for value in self.data[keys[0]]:
+                data.append(value)
+            return np.array(data)
+        else:
+            data = []
+            for i in range(0, len(self.data[keys[0]])):
+                data.append([])
+                for key in keys:
+                    data[i].append(self.data[key][i])
+            return np.array(data)
